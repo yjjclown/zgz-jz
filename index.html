@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title></title>
+	</head>
+	<body>
+		<pre>
+		<input type="text" placeholder="请输入姓名" id="text" >
+		请输入相关文字:
+		<input type="text" id="prize">
+		请输入日期：
+		<input type="date" id="day">
+		<input type="button" value="点击获取" id="submit">
+		</pre>
+		<pre>
+		    <canvas style="background-color: #fff;" id="myCanVas" width="600" height="865">不好意思！！您的浏览器不支持canvas标签</canvas>
+		</pre>
+		
+		<script type="text/javascript">
+			var can = document.getElementById("myCanVas");
+			var myCan = can.getContext("2d");
+			var img = new Image();
+			img.src = "img/bg.jpg";
+			img.onload = function() {
+				myCan.drawImage(img, 0, 0,600,865);
+			}
+			setTimeout(function() {
+							var imgt = new Image();
+							imgt.src = "img/seal.png";
+							imgt.onload = function() {
+								myCan.drawImage(imgt, 365, 570,150,150);
+							}
+						}, 100 /*设置100的延迟*/);
+			var txt = document.getElementById("text");
+			var pr = document.getElementById("prize");
+			var da = document.getElementById("day");
+			var but = document.getElementById("submit");
+			but.onclick = function() {
+				myCan.beginPath();
+				myCan.font = "22px Arial";
+				myCan.fillText(txt.value, 140, 390);
+				drawText(pr.value, 128, 410, 358);
+				myCan.fillText(da.value, 380, 660);
+				myCan.closePath();
+			}
+			
+			function drawText(t, x, y, w) {
+							var chr = t.split("");
+							var temp = "";
+							var row = [];
+							var count = 0;
+							myCan.font = "21px 宋体";
+							for(var a = 0; a < chr.length; a++) {
+								if(count == 0) {
+									if(myCan.measureText(temp).width < w - 40) {;
+									} else {
+										count += 1;
+										row.push(temp);
+										temp = "";
+									}
+									temp += chr[a];
+								} else {
+									if(myCan.measureText(temp).width < w) {;
+									} else {
+										count += 1;
+										row.push(temp);
+										temp = "";
+									}
+									temp += chr[a];
+								}
+							}
+			 
+							row.push(temp);
+			 
+							for(var b = 0; b < row.length; b++) {
+			 
+								myCan.fillText(row[b], b==0?x+40:x, y + (b + 1) * 30);
+							}
+						}
+		</script>
+	</body>
+</html>
